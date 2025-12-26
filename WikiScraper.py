@@ -36,6 +36,17 @@ class WikiScraper:
         """
         response = requests.get(self.url, headers=self.headers, timeout=10)
         print(response.status_code)
+        
+    def checkIfExists(self):
+        page_to_scrape = requests.get(self.url, headers=self.headers)
+        soup = BeautifulSoup(page_to_scrape.text, "html.parser")
+        
+        noArticle = soup.find("div", id="noarticletext")
+        
+        if (noArticle):
+            return False
+        
+        return True
 
     def _getTitles(self, soup) -> dict:
         """Return a dictionary of title -> full Wikipedia URL."""
